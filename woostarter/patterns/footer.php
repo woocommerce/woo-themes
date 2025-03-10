@@ -5,123 +5,135 @@
  * Inserter: no
  */
 ?>
-<!-- wp:group {"metadata":{"name":"Default Footer"},"align":"full","className":"is-style-section-1","style":{"spacing":{"padding":{"top":"0","bottom":"0"}}},"layout":{"type":"constrained"}} -->
+<!-- wp:group {"metadata":{"name":"Footer Container"},"align":"full","className":"is-style-section-1","style":{"spacing":{"padding":{"top":"0","bottom":"0"}}},"layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull is-style-section-1" style="padding-top:0;padding-bottom:0"><!-- wp:spacer {"height":"var:preset|spacing|50"} -->
 <div style="height:var(--wp--preset--spacing--50)" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:columns {"align":"wide","style":{"spacing":{"blockGap":{"top":"var:preset|spacing|50","left":"var:preset|spacing|50"}}}} -->
-<div class="wp-block-columns alignwide"><!-- wp:column {"width":"40%"} -->
-<div class="wp-block-column" style="flex-basis:40%"><!-- wp:heading {"textAlign":"left","level":3,"fontSize":"medium"} -->
-<h3 class="wp-block-heading has-text-align-left has-medium-font-size"><?php esc_html_e('Subscribe to our newsletter', 'woostarter');?></h3>
+<!-- wp:columns {"align":"wide"} -->
+<div class="wp-block-columns alignwide"><!-- wp:column {"verticalAlignment":"stretch","width":"60%"} -->
+<div class="wp-block-column is-vertically-aligned-stretch" style="flex-basis:60%"><!-- wp:group {"style":{"dimensions":{"minHeight":"100%"}},"layout":{"type":"flex","orientation":"vertical","verticalAlignment":"space-between"}} -->
+<div class="wp-block-group" style="min-height:100%"><!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"stretch"}} -->
+<div class="wp-block-group"><!-- wp:jetpack/contact-form {"className":"is-style-animated","style":{"spacing":{"padding":{"top":"0","bottom":"0"}},"layout":{"selfStretch":"fit","flexSize":null}}} -->
+<div class="wp-block-jetpack-contact-form is-style-animated" style="padding-top:0;padding-bottom:0"><!-- wp:heading {"level":3} -->
+<h3 class="wp-block-heading"><?php esc_html_e('Subscribe to our newsletter', 'woostarter');?></h3>
 <!-- /wp:heading -->
 
-<!-- wp:paragraph {"align":"left"} -->
-<p class="has-text-align-left"><?php esc_html_e('[Jetpack form]', 'woostarter');?></p>
-<!-- /wp:paragraph -->
+<!-- wp:jetpack/field-email {"label":"","placeholder":"Your email","borderRadius":100,"borderColor":"rgba(17, 17, 17, 0.2)"} /-->
 
-<!-- wp:social-links {"className":"is-style-logos-only"} -->
-<ul class="wp-block-social-links is-style-logos-only"><!-- wp:social-link {"url":"#","service":"instagram"} /-->
+<!-- wp:jetpack/button {"element":"button","text":"Subscribe","lock":{"move":false,"remove":false},"className":"is-style-fill","fontFamily":"manrope"} /--></div>
+<!-- /wp:jetpack/contact-form --></div>
+<!-- /wp:group -->
+
+<!-- wp:spacer {"height":"0px","style":{"layout":{"selfStretch":"fixed","flexSize":"20px"},"spacing":{"margin":{"top":"0","bottom":"0"}}}} -->
+<div style="margin-top:0;margin-bottom:0;height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer -->
+
+<!-- wp:social-links {"iconColor":"contrast","iconColorValue":"#111111","size":"has-normal-icon-size","className":"is-style-logos-only","style":{"spacing":{"blockGap":{"left":"var:preset|spacing|30"}}}} -->
+<ul class="wp-block-social-links has-normal-icon-size has-icon-color is-style-logos-only"><!-- wp:social-link {"url":"#","service":"instagram"} /-->
 
 <!-- wp:social-link {"url":"#","service":"x"} /-->
 
 <!-- wp:social-link {"url":"#","service":"whatsapp"} /--></ul>
 <!-- /wp:social-links --></div>
-<!-- /wp:column -->
-
-<!-- wp:column {"width":"30%"} -->
-<div class="wp-block-column" style="flex-basis:30%"></div>
-<!-- /wp:column -->
-
-<!-- wp:column {"width":"15%","layout":{"type":"default"}} -->
-<div class="wp-block-column" style="flex-basis:15%"><!-- wp:heading {"textAlign":"left","level":3,"fontSize":"medium"} -->
-<h3 class="wp-block-heading has-text-align-left has-medium-font-size"><?php esc_html_e('Shop', 'woostarter');?></h3>
-<!-- /wp:heading -->
-
-<!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","orientation":"vertical"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"align":"left"} -->
-<p class="has-text-align-left"><?php esc_html_e('Ceramics', 'woostarter');?></p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Furniture', 'woostarter');?></p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Accessories', 'woostarter');?></p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Clothing', 'woostarter');?></p>
-<!-- /wp:paragraph --></div>
 <!-- /wp:group --></div>
 <!-- /wp:column -->
 
-<!-- wp:column {"width":"15%","layout":{"type":"default"}} -->
-<div class="wp-block-column" style="flex-basis:15%"><!-- wp:heading {"textAlign":"left","level":3,"fontSize":"medium"} -->
-<h3 class="wp-block-heading has-text-align-left has-medium-font-size"><?php esc_html_e('Info', 'woostarter');?></h3>
-<!-- /wp:heading -->
+<!-- wp:column {"width":"20%"} -->
+<div class="wp-block-column" style="flex-basis:20%"><!-- wp:spacer {"height":"var:preset|spacing|40"} -->
+<div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- /wp:spacer --></div>
+<!-- /wp:column -->
 
-<!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|20"}},"layout":{"type":"flex","orientation":"vertical"}} -->
-<div class="wp-block-group"><!-- wp:paragraph {"align":"left"} -->
-<p class="has-text-align-left"><?php esc_html_e('Ceramics', 'woostarter');?></p>
+<!-- wp:column {"width":"40%"} -->
+<div class="wp-block-column" style="flex-basis:40%"><!-- wp:columns {"isStackedOnMobile":false} -->
+<div class="wp-block-columns is-not-stacked-on-mobile"><!-- wp:column -->
+<div class="wp-block-column"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical"}} -->
+<div class="wp-block-group"><!-- wp:paragraph {"className":"is-style-default","fontSize":"large"} -->
+<p class="is-style-default has-large-font-size"><?php esc_html_e('Shop', 'woostarter');?></p>
 <!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Furniture', 'woostarter');?></p>
-<!-- /wp:paragraph -->
+<!-- wp:navigation {"overlayMenu":"never","style":{"spacing":{"blockGap":"var:preset|spacing|20"}},"fontSize":"medium","layout":{"type":"flex","orientation":"vertical"}} -->
+<!-- wp:navigation-link {"label":"Blog","url":"#"} /-->
 
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Accessories', 'woostarter');?></p>
-<!-- /wp:paragraph -->
+<!-- wp:navigation-link {"label":"About","url":"#"} /-->
 
-<!-- wp:paragraph -->
-<p><?php esc_html_e('Clothing', 'woostarter');?></p>
-<!-- /wp:paragraph --></div>
+<!-- wp:navigation-link {"label":"FAQs","url":"#"} /-->
+
+<!-- wp:navigation-link {"label":"Authors","url":"#"} /-->
+<!-- /wp:navigation --></div>
 <!-- /wp:group --></div>
+<!-- /wp:column -->
+
+<!-- wp:column -->
+<div class="wp-block-column"><!-- wp:group {"style":{"spacing":{"blockGap":"var:preset|spacing|30"}},"layout":{"type":"flex","orientation":"vertical"}} -->
+<div class="wp-block-group"><!-- wp:paragraph {"fontSize":"large"} -->
+<p class="has-large-font-size"><?php esc_html_e('Info', 'woostarter');?></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:navigation {"overlayMenu":"never","style":{"spacing":{"blockGap":"var:preset|spacing|20"}},"fontSize":"medium","layout":{"type":"flex","orientation":"vertical"}} -->
+<!-- wp:navigation-link {"label":"Events","url":"#"} /-->
+
+<!-- wp:navigation-link {"label":"Shop","url":"#"} /-->
+
+<!-- wp:navigation-link {"label":"Patterns","url":"#"} /-->
+
+<!-- wp:navigation-link {"label":"Themes","url":"#"} /-->
+<!-- /wp:navigation --></div>
+<!-- /wp:group --></div>
+<!-- /wp:column --></div>
+<!-- /wp:columns --></div>
 <!-- /wp:column --></div>
 <!-- /wp:columns -->
 
-<!-- wp:spacer {"height":"var:preset|spacing|50"} -->
-<div style="height:var(--wp--preset--spacing--50)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- wp:spacer {"height":"var:preset|spacing|40"} -->
+<div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"space-between"}} -->
+<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
 <div class="wp-block-group alignwide"><!-- wp:buttons -->
 <div class="wp-block-buttons"><!-- wp:button {"className":"is-style-outline"} -->
 <div class="wp-block-button is-style-outline"><a class="wp-block-button__link wp-element-button"><?php esc_html_e('United Kingdom (GBP £)', 'woostarter');?></a></div>
 <!-- /wp:button --></div>
 <!-- /wp:buttons -->
 
-<!-- wp:paragraph -->
-<p><?php esc_html_e('[Shopping icons]', 'woostarter');?></p>
-<!-- /wp:paragraph --></div>
+<!-- wp:image {"width":"300px","style":{"spacing":{"margin":{"top":"var:preset|spacing|40"}}}} -->
+<figure class="wp-block-image is-resized" style="margin-top:var(--wp--preset--spacing--40)"><img src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/woo-payment-icons.png" alt="" style="width:300px"/></figure>
+<!-- /wp:image --></div>
 <!-- /wp:group -->
 
-<!-- wp:spacer {"height":"var:preset|spacing|20"} -->
-<div style="height:var(--wp--preset--spacing--20)" aria-hidden="true" class="wp-block-spacer"></div>
+<!-- wp:spacer {"height":"var:preset|spacing|40"} -->
+<div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:group {"align":"full","style":{"spacing":{"blockGap":"0"}},"layout":{"type":"constrained"}} -->
-<div class="wp-block-group alignfull"><!-- wp:separator {"align":"full"} -->
+<!-- wp:separator {"align":"full"} -->
 <hr class="wp-block-separator alignfull has-alpha-channel-opacity"/>
 <!-- /wp:separator -->
 
-<!-- wp:spacer {"height":"var:preset|spacing|40","style":{"layout":[]}} -->
-<div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
-<!-- /wp:spacer -->
-
-<!-- wp:group {"align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|50","left":"var:preset|spacing|50"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
-<div class="wp-block-group alignfull" style="padding-right:var(--wp--preset--spacing--50);padding-left:var(--wp--preset--spacing--50)"><!-- wp:paragraph {"align":"left","fontSize":"small"} -->
-<p class="has-text-align-left has-small-font-size"><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
-echo sprintf( esc_html__( 'Designed with %1$sWooCommerce%2$s', 'woostarter' ), '<a href="' . esc_url( 'https://woocommerce.com' ) . '">', '</a>' ); ?></p>
+<!-- wp:group {"align":"wide","style":{"spacing":{"padding":{"top":"var:preset|spacing|40"}}},"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"}} -->
+<div class="wp-block-group alignwide" style="padding-top:var(--wp--preset--spacing--40)"><!-- wp:paragraph {"fontSize":"small"} -->
+<p class="has-small-font-size"><?php esc_html_e('© 2025 Woo Theme. Designed with WordPress', 'woostarter');?></p>
 <!-- /wp:paragraph -->
 
-<!-- wp:navigation {"overlayMenu":"never","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"left"}} /--></div>
+<!-- wp:group {"fontSize":"small","layout":{"type":"flex","flexWrap":"wrap"}} -->
+<div class="wp-block-group has-small-font-size"><!-- wp:paragraph -->
+<p><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
+echo sprintf( esc_html__( '%1$sShipping & Returns%2$s', 'woostarter' ), '<a href="' . esc_url( '#' ) . '">', '</a>' ); ?></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
+echo sprintf( esc_html__( '%1$sPrivacy Policy%2$s', 'woostarter' ), '<a href="' . esc_url( '#' ) . '">', '</a>' ); ?></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
+echo sprintf( esc_html__( '%1$sTerms & Conditions%2$s', 'woostarter' ), '<a href="' . esc_url( '#' ) . '">', '</a>' ); ?></p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:group --></div>
 <!-- /wp:group -->
 
-<!-- wp:spacer {"height":"var:preset|spacing|40","style":{"layout":[]}} -->
+<!-- wp:spacer {"height":"var:preset|spacing|40"} -->
 <div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer --></div>
-<!-- /wp:group --></div>
 <!-- /wp:group -->

@@ -1,24 +1,17 @@
 /*
 Theme Name: woostarter
 Theme URI: 
-Author: Automattic
-Author URI: https://automattic.com/
-Description: Woo starter theme.
-Requires at least: 6.4
+Author: 
+Author URI: 
+Description: 
+Requires at least: 6.7
 Tested up to: 6.7
 Requires PHP: 7.0
-Version: 0.0.1
+Version: 1.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: woostarter
-Tags: 
-*/
-
-/* Set default line height for font size presets. */
-
-.has-xx-large-font-size {
-	line-height: 1;
-}
+Tags: blog, one-column, three-columns, wide-blocks, block-patterns, custom-colors, custom-logo, custom-menu, editor-style, featured-images, full-site-editing, rtl-language-support, style-variations, template-editing, theme-options, threaded-comments, translation-ready
 
 /* Add a transition state for buttons. */
 
@@ -26,7 +19,7 @@ Tags:
     transition: border, background-color, color, box-shadow, opacity, filter;
     transition-duration: 0.15s;
     transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    backdrop-filter: blur(30px);
+    backdrop-filter: blur(30px) brightness(120%);
 }
 
 /* Fields */
@@ -43,7 +36,7 @@ label,
 }
 
 textarea,
-input:not([type=submit]):not([type=checkbox]):not([type=radio]):not([type=range]),
+input:not([type=submit]):not([type=checkbox]):not([type=radio]),
 .wp-block-post-comments-form textarea,
 .wp-block-post-comments-form input:not([type=submit]):not([type=checkbox]):not([type=radio]),
 .jetpack-contact-form .jetpack-field .jetpack-field__input,
