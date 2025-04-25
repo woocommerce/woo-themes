@@ -199,6 +199,12 @@
 					"lineHeight": "1.1",
 					"letterSpacing": "-0.36px"
 				},
+				"spacing": {
+					"padding": {
+						"left": "var(--wp--preset--spacing--40)",
+						"right": "var(--wp--preset--spacing--40)"
+					}
+				},
 				"variations": {
 					"outline": {
 						"border": {
