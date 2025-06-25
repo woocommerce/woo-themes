@@ -1,11 +1,11 @@
 <?php
 /**
- * Title: Hero with text and two buttons
- * Slug: woostarter/hero-with-text-and-two-buttons
+ * Title: Hero with text and one button
+ * Slug: woostarter/hero-with-text-and-one-button
  * Categories: Banners
  */
 ?>
-<!-- wp:group {"metadata":{"name":"Hero with text and two buttons"},"align":"full","layout":{"type":"constrained"}} -->
+<!-- wp:group {"metadata":{"name":"Hero with text and one button"},"align":"full","layout":{"type":"constrained"}} -->
 <div class="wp-block-group alignfull">
 <!-- wp:cover {"url":"<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/hero-image.webp","id":10008,"dimRatio":0,"customOverlayColor":"theme-2","isUserOverlayColor":true,"minHeight":70,"minHeightUnit":"vh","contentPosition":"center left","sizeSlug":"large","align":"full","style":{"spacing":{"padding":{"right":"var:preset|spacing|60","left":"var:preset|spacing|60","top":"var:preset|spacing|60","bottom":"var:preset|spacing|60"}},"elements":{"link":{"color":{"text":"var:preset|color|theme-1"}}}},"textColor":"theme-1","layout":{"type":"constrained"}} -->
 <div class="wp-block-cover alignfull has-custom-content-position is-position-center-left has-theme-1-color has-text-color has-link-color" style="padding-top:var(--wp--preset--spacing--60);padding-right:var(--wp--preset--spacing--60);padding-bottom:var(--wp--preset--spacing--60);padding-left:var(--wp--preset--spacing--60);min-height:70vh"><img class="wp-block-cover__image-background wp-image-10008 size-large" alt="" src="<?php echo esc_url( get_template_directory_uri() ); ?>/assets/images/hero-image.webp" data-object-fit="cover"/><span aria-hidden="true" class="wp-block-cover__background has-theme-2-background-color has-background-dim-0 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"left","placeholder":"Write title…","fontSize":"xx-large"} -->
