@@ -1,0 +1,82 @@
+name: 🧪 Theme Feedback / Bug Report
+description: Share your experience testing the Woo Block Theme — whether it's a bug, layout issue, or general feedback.
+labels: ["type: feedback", "theme"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🧪 Thanks for testing the Woo Block Theme!
+
+        This theme is in its early stages and meant for feedback, learning, and experimentation with WooCommerce blocks.
+
+        Use this form to share anything unexpected, broken, confusing, or interesting — including layout problems, extension conflicts, block quirks, or UX ideas.
+
+        If you're unsure whether it's a bug or feedback, that's fine — share it anyway!
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What did you experience?
+      description: Describe the issue, observation, or feedback in your own words.
+      placeholder: |
+        Examples:
+        - The Product Grid block looks broken on mobile
+        - The Cart block doesn't style correctly
+        - I love how simple the header is
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: type
+    attributes:
+      label: What kind of feedback is this?
+      options:
+        - label: 🐞 Bug or broken layout
+        - label: 🔌 Conflict with a WooCommerce extension
+        - label: 🧱 Confusing or missing block behavior
+        - label: 💬 General design/UX feedback
+        - label: 🧰 Developer-related feedback (templates, code, structure)
+        - label: 💡 Feature suggestion or improvement idea
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: How did you get there?
+      description: Share what you were doing before the issue happened, or how to recreate it.
+      placeholder: |
+        1. Added the Featured Product block to the homepage
+        2. Tried to change alignment in the block toolbar
+        3. It disappeared on the frontend
+    validations:
+      required: false
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Your testing environment
+      description: Share any info that could help us reproduce the issue.
+      placeholder: |
+        - WordPress version: 6.6
+        - WooCommerce version: 9.0
+        - Browser: Safari 17.5 on macOS
+        - Active extensions: Woo Subscriptions 5.7.0
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or recordings
+      description: Drag & drop any visuals that show what you're seeing.
+      placeholder: |
+        Optional but helpful!
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Anything else you'd like to share?
+      description: Add your thoughts, hopes, or questions here — everything helps.
+      placeholder: |
+        I’d love to see more styling options for the Mini Cart…
+    validations:
+      required: false
