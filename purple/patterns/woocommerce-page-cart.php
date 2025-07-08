@@ -78,8 +78,8 @@
 <!-- /wp:woocommerce/cart-totals-block -->
 
 <!-- wp:woocommerce/cart-cross-sells-block -->
-<div class="wp-block-woocommerce-cart-cross-sells-block"><!-- wp:heading {"fontSize":"large"} -->
-<h2 class="wp-block-heading has-large-font-size"><?php esc_html_e('Browse products', 'purple');?></h2>
+<div class="wp-block-woocommerce-cart-cross-sells-block"><!-- wp:heading -->
+<h2 class="wp-block-heading"><?php esc_html_e('Browse products', 'purple');?></h2>
 <!-- /wp:heading -->
 
 <!-- wp:woocommerce/cart-cross-sells-products-block -->
@@ -108,8 +108,8 @@
 <div style="height:var(--wp--preset--spacing--40)" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:paragraph {"align":"center","style":{"elements":{"link":{"color":{"text":"var:preset|color|theme-4"}}}},"textColor":"theme-4","fontSize":"small"} -->
-<p class="has-text-align-center has-theme-4-color has-text-color has-link-color has-small-font-size"><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
+<!-- wp:paragraph {"align":"center"} -->
+<p class="has-text-align-center"><?php /* Translators: 1. is the start of a 'a' HTML element, 2. is the end of a 'a' HTML element */ 
 echo sprintf( esc_html__( 'Have an account? %1$sLog in%2$s to check out faster.', 'purple' ), '<a href="' . esc_url( '/my-account' ) . '">', '</a>' ); ?></p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:group -->
@@ -129,9 +129,9 @@ echo sprintf( esc_html__( 'Have an account? %1$sLog in%2$s to check out faster.
 <!-- wp:woocommerce/product-sale-badge {"align":"left","style":{"spacing":{"margin":{"right":"var:preset|spacing|20","left":"var:preset|spacing|20","top":"var:preset|spacing|20","bottom":"var:preset|spacing|20"}}}} /-->
 <!-- /wp:woocommerce/product-image -->
 
-<!-- wp:post-title {"textAlign":"left","isLink":true,"style":{"typography":{"lineHeight":"1.4"}},"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title"} /-->
+<!-- wp:post-title {"textAlign":"left","isLink":true,"style":{"typography":{"lineHeight":"1.4"}},"__woocommerceNamespace":"woocommerce/product-collection/product-title"} /-->
 
-<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"left","fontSize":"small"} /-->
+<!-- wp:woocommerce/product-price {"isDescendentOfQueryLoop":true,"textAlign":"left"} /-->
 <!-- /wp:woocommerce/product-template --></div>
 <!-- /wp:woocommerce/product-collection --></div>
 <!-- /wp:group --></div>
