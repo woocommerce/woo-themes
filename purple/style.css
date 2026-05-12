@@ -37,3 +37,13 @@ Tags: e-commerce, one-column, two-columns, three-columns, four-columns, wide-blo
     padding-top: var(--wp--preset--spacing--60);
     padding-bottom: var(--wp--preset--spacing--70);
 }
+
+/* Align the quantity stepper height with the Add to Cart button.
+ * Approximates the button's intrinsic height: padding (0.75em top + 0.75em bottom)
+ * + line-height + 2px border. */
+.wp-block-woocommerce-add-to-cart-with-options-quantity-selector,
+.wc-block-components-quantity-selector {
+    min-height: calc(0.75em * 2 + 1.5em + 2px);
+    display: flex;
+    align-items: stretch;
+}
