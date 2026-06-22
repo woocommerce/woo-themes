@@ -57,6 +57,102 @@ Tags: e-commerce, one-column, two-columns, three-columns, four-columns, wide-blo
     align-items: flex-start;
 }
 
+/* WOOPRD-3542: Catalog sort order select.
+ * Baseline: strip native OS chrome so the closed control matches Purple.
+ * Progressive enhancement: appearance: base-select styles the picker panel
+ * in supporting browsers (Chrome 135+). Non-supporting browsers keep the
+ * custom closed-state look and the native OS dropdown. */
+.woocommerce.wc-block-catalog-sorting select.orderby {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--wp--preset--color--theme-1);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    border: 1px solid var(--wp--preset--color--theme-6);
+    border-radius: 0;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+    line-height: 1.5;
+    min-width: 12rem;
+    padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+    transition: border-color 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        background-color 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.woocommerce.wc-block-catalog-sorting select.orderby:hover,
+.woocommerce.wc-block-catalog-sorting select.orderby:focus {
+    background-color: var(--wp--preset--color--theme-5);
+    border-color: var(--wp--preset--color--theme-2);
+    outline: none;
+}
+
+.woocommerce.wc-block-catalog-sorting.has-text-color select.orderby:hover,
+.woocommerce.wc-block-catalog-sorting.has-text-color select.orderby:focus {
+    background-color: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+@supports (appearance: base-select) {
+    .woocommerce.wc-block-catalog-sorting select.orderby,
+    .woocommerce.wc-block-catalog-sorting select.orderby::picker(select) {
+        appearance: base-select;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby {
+        background-image: none;
+        padding-inline-end: 2rem;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby::picker-icon {
+        color: var(--wp--preset--color--theme-2);
+        transition: rotate 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .woocommerce.wc-block-catalog-sorting.has-text-color select.orderby::picker-icon {
+        color: currentColor;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby:open::picker-icon {
+        rotate: 180deg;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby::picker(select) {
+        background-color: var(--wp--preset--color--theme-1);
+        border: 1px solid var(--wp--preset--color--theme-6);
+        border-radius: 0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        margin-block-start: 0.25rem;
+        padding: 0;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby option {
+        background-color: var(--wp--preset--color--theme-1);
+        color: var(--wp--preset--color--theme-2);
+        padding: 0.5rem 0.75rem;
+    }
+
+    .woocommerce.wc-block-catalog-sorting.has-text-color select.orderby option {
+        color: inherit;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby option:hover,
+    .woocommerce.wc-block-catalog-sorting select.orderby option:focus {
+        background-color: var(--wp--preset--color--theme-5);
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby option:checked {
+        background-color: var(--wp--preset--color--theme-5);
+        font-weight: 500;
+    }
+
+    .woocommerce.wc-block-catalog-sorting select.orderby option::checkmark {
+        color: var(--wp--preset--color--theme-3);
+    }
+}
+
 /* Navigation dropdown panel — desktop only.
  * Above the mobile overlay breakpoint, give the submenu its own
  * floating-panel styling (page-color background + soft shadow).
