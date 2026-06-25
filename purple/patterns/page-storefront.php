@@ -1,9 +1,9 @@
 <?php
 /**
- * Title: Shop homepage
- * Slug: purple/home
+ * Title: Storefront
+ * Slug: purple/storefront
  * Inserter: no
- * Template Types: front-page, index, home
+ * Template Types: front-page
  */
 ?>
 
