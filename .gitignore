@@ -31,3 +31,6 @@ logs/
 # Code analyzer output and env
 changes.json
 .env
+
+# Claude Code local configuration
+.claude/
