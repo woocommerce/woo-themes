@@ -15,10 +15,6 @@ Tags: e-commerce, one-column, two-columns, three-columns, four-columns, wide-blo
 */
 
 /* ==========================================================================
-   Utilities
-   ========================================================================== */
-
-/* ==========================================================================
    Forms
    ========================================================================== */
 
@@ -321,10 +317,6 @@ a.wc-block-components-product-name:hover {
    WooCommerce — Catalog
    ========================================================================== */
 
-/* Catalog sort order select — CSS customizable select (base-select).
- * Continues PR #82 exploration: https://github.com/woocommerce/woo-themes/pull/82
- * Closed/open styles from Figma Dropdown/Default (1:6531) and Dropdown/Open Links (37:1153).
- * Strip native chrome with appearance: none first; opt into base-select for the picker. */
 /* The block renders its own "Sort by" label beside the select; as inline
  * content the label sits on the baseline while the select is middle-aligned,
  * so their text drifts apart vertically. Center both in a flex row. */
