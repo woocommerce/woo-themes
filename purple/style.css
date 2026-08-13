@@ -18,15 +18,6 @@ Tags: e-commerce, one-column, two-columns, three-columns, four-columns, wide-blo
    Utilities
    ========================================================================== */
 
-/*
- * Link styles
- * https://github.com/WordPress/gutenberg/issues/42319
- */
-a {
-	text-decoration-thickness: max(0.025em, 1px) !important;
-	text-underline-offset: 0.15em;
-}
-
 /* Add a transition state for buttons. */
 .wp-element-button {
 	transition: border, background-color, color, box-shadow, opacity, filter;
