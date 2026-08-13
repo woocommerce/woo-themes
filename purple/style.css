@@ -82,19 +82,6 @@ body {
 }
 
 /* ==========================================================================
-   Navigation overlay
-   ========================================================================== */
-
-/* Core does not expose submenu indentation as a Navigation block control. */
-.purple-navigation-overlay .wp-block-navigation .has-child.open-always > .wp-block-navigation__submenu-container {
-	padding-inline: 1.875rem 0;
-}
-
-.purple-navigation-overlay .wp-block-navigation .wp-block-navigation__submenu-container .wp-block-navigation__submenu-container .has-child.open-always > .wp-block-navigation__submenu-container {
-	padding-inline-start: 1.25rem;
-}
-
-/* ==========================================================================
    WooCommerce — Mini cart
    ========================================================================== */
 
