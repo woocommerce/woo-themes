@@ -206,6 +206,7 @@
 		"useRootPaddingAwareAlignments": true
 	},
 	"styles": {
+		"css": ".wp-block-table td, .wp-block-table th { border-color: var(--wp--preset--color--theme-6); } .wp-block-table th { font-weight: 600; }",
 		"blocks": {
 			"core/accordion-heading": {
 				"color": {
@@ -263,6 +264,7 @@
 				}
 			},
 			"core/cover": {
+				"css": "--wp--custom--outline-button-color: currentColor;",
 				"elements": {
 					"heading": {
 						"color": {
@@ -524,6 +526,29 @@
 			"woocommerce/catalog-sorting": {
 				"typography": {
 					"fontSize": "var(--wp--preset--font-size--medium)"
+				},
+				"elements": {
+					"select": {
+						"color": {
+							"background": "transparent",
+							"text": "var(--wp--preset--color--theme-2)"
+						},
+						"border": {
+							"color": "transparent",
+							"width": "0px",
+							"style": "solid"
+						},
+						"typography": {
+							"fontWeight": "300",
+							"fontFamily": "inherit"
+						},
+						"spacing": {
+							"padding": {
+							"left": "0",
+							"right": "var(--wp--preset--spacing--10)"
+							}
+						}
+					}
 				}
 			},
 			"woocommerce/product-rating": {
@@ -704,6 +729,11 @@
 				},
 				"typography": {
 					"textDecoration": "underline"
+				}
+			},
+			"textInput": {
+				"border": {
+					"color": "var(--wp--preset--color--theme-6)"
 				}
 			}
 		},
