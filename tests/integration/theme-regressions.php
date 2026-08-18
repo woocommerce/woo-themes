@@ -33,10 +33,11 @@ $stage = $args[0] ?? '';
 purple_test_assert( class_exists( 'WooCommerce' ), 'WooCommerce must be active.' );
 purple_test_assert( wp_get_theme( 'purple' )->exists(), 'Purple must be installed.' );
 purple_test_assert( wp_get_theme( 'purple-child' )->exists(), 'The Purple child fixture must be installed.' );
+purple_test_assert( wp_get_theme( 'ci-placeholder-theme' )->exists(), 'The placeholder theme must be installed.' );
 
 switch ( $stage ) {
 	case 'prepare-customized-cart':
-		purple_test_assert( 'twentytwentyfive' === get_stylesheet(), 'Twenty Twenty-Five must be active during setup.' );
+		purple_test_assert( 'ci-placeholder-theme' === get_stylesheet(), 'The placeholder theme must be active during setup.' );
 
 		$custom_content = '<!-- wp:paragraph --><p>Merchant cart customization</p><!-- /wp:paragraph -->';
 		$cart_page_id   = wp_insert_post(
@@ -73,7 +74,7 @@ switch ( $stage ) {
 		break;
 
 	case 'prepare-empty-cart':
-		purple_test_assert( 'twentytwentyfive' === get_stylesheet(), 'Twenty Twenty-Five must be active during setup.' );
+		purple_test_assert( 'ci-placeholder-theme' === get_stylesheet(), 'The placeholder theme must be active during setup.' );
 		purple_test_assert( purple_test_cart_page_id() > 0, 'The Cart regression page must exist.' );
 
 		$updated = wp_update_post(
