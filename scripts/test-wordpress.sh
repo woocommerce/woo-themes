@@ -3,7 +3,7 @@
 set -euo pipefail
 
 wp_cli() {
-	npm run --silent wp-env -- run cli wp "$@"
+	pnpm exec wp-env run cli wp "$@"
 }
 
 wp_cli theme activate ci-placeholder
