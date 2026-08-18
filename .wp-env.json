@@ -6,7 +6,6 @@
 	],
 	"themes": [
 		"./purple",
-		"./tests/fixtures/ci-placeholder",
 		"./tests/fixtures/purple-child"
 	],
 	"mappings": {
