@@ -20,6 +20,8 @@ logs/
 *.sql
 *.swp
 *.zip
+node_modules/
+vendor/
 
 # Support .gitkeep Files
 !.gitkeep

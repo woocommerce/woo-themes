@@ -1,0 +1,19 @@
+{
+	"name": "woocommerce/woo-themes",
+	"description": "Development tools for WooCommerce starter themes.",
+	"type": "project",
+	"license": "GPL-2.0-or-later",
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+		"wp-coding-standards/wpcs": "^3.3"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		},
+		"sort-packages": true
+	},
+	"scripts": {
+		"lint": "phpcs --standard=purple/phpcs.xml.dist purple"
+	}
+}

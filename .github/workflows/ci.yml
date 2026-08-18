@@ -1,0 +1,91 @@
+name: Theme CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - trunk
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: theme-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source:
+    name: Source validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Validate theme metadata, JSON, patterns, and assets
+        run: npm run validate:theme
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
+        with:
+          php-version: '7.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Check PHP syntax on the minimum supported PHP version
+        run: find purple -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Run WordPress Coding Standards
+        run: composer lint
+
+  wordpress:
+    name: WordPress ${{ matrix.label }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: '7.0'
+            core: https://wordpress.org/wordpress-7.0.zip
+          - label: latest
+            core: https://wordpress.org/latest.zip
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start WordPress
+        env:
+          WP_ENV_CORE: ${{ matrix.core }}
+        run: npm run wp-env -- start --update
+
+      - name: Run activation, Cart migration, and child-theme checks
+        run: npm run test:wordpress
+
+      - name: Stop WordPress
+        if: always()
+        run: npm run wp-env -- stop
