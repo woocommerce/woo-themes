@@ -503,6 +503,9 @@
 					"text": "var(--wp--preset--color--theme-2)"
 				}
 			},
+			"woocommerce/product-filters": {
+				"css": "--wc-product-filter-block-spacing: 0;"
+			},
 			"woocommerce/product-gallery": {
 				"spacing": {
 					"blockGap": "var(--wp--preset--spacing--10)"
@@ -767,6 +770,16 @@
 			"area": "header",
 			"name": "header-alternative",
 			"title": "Header alternative"
+		},
+		{
+			"area": "navigation-overlay",
+			"name": "purple-navigation-overlay",
+			"title": "Purple navigation overlay"
+		},
+		{
+			"area": "navigation-overlay",
+			"name": "purple-navigation-overlay-alternative",
+			"title": "Purple navigation overlay alternative"
 		},
 		{
 			"area": "footer",
