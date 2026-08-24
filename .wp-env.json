@@ -1,8 +1,9 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"phpVersion": "7.4",
 	"testsEnvironment": false,
 	"plugins": [
-		"https://downloads.wordpress.org/plugin/woocommerce.11.0.1.zip"
+		"https://github.com/woocommerce/woocommerce/releases/download/nightly/woocommerce-trunk-nightly.zip"
 	],
 	"themes": [
 		"./purple",

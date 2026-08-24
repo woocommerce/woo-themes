@@ -42,7 +42,7 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@bf6b4fbd49ca58e4608c9c89fba0b8d90bd2a39f # 2.35.5
         with:
-          php-version: '7.2'
+          php-version: '7.4'
           coverage: none
           tools: composer:v2
 
@@ -89,7 +89,7 @@ jobs:
           WP_ENV_CORE: ${{ matrix.core }}
         run: pnpm wp-env start --update
 
-      - name: Run activation, Cart migration, and child-theme checks
+      - name: Run activation and child-theme checks
         run: pnpm test:wordpress
 
       - name: Stop WordPress
