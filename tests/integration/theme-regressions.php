@@ -22,6 +22,11 @@ function purple_test_assert( bool $condition, string $message ): void {
 $stage = $args[0] ?? '';
 
 purple_test_assert( class_exists( 'WooCommerce' ), 'WooCommerce must be active.' );
+purple_test_assert(
+	defined( 'WC_PLUGIN_FILE' )
+		&& 'woocommerce/woocommerce.php' === plugin_basename( WC_PLUGIN_FILE ),
+	'WooCommerce must use its canonical plugin basename.'
+);
 purple_test_assert( wp_get_theme( 'purple' )->exists(), 'Purple must be installed.' );
 purple_test_assert( wp_get_theme( 'purple-child' )->exists(), 'The Purple child fixture must be installed.' );
 purple_test_assert( wp_get_theme( 'ci-placeholder-theme' )->exists(), 'The placeholder theme must be installed.' );
