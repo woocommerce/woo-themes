@@ -1,0 +1,14 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/wp-env.json",
+	"phpVersion": "7.4",
+	"testsEnvironment": false,
+	"themes": [
+		"./purple",
+		"./tests/fixtures/ci-placeholder-theme",
+		"./tests/fixtures/purple-child"
+	],
+	"mappings": {
+		"wp-content/plugins/woocommerce": "https://github.com/woocommerce/woocommerce/releases/download/nightly/woocommerce-trunk-nightly.zip",
+		"wp-content/theme-tests": "./tests/integration"
+	}
+}

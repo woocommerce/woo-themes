@@ -1,0 +1,17 @@
+{
+	"name": "woo-themes",
+	"private": true,
+	"packageManager": "pnpm@11.22.0",
+	"scripts": {
+		"test:wordpress": "bash scripts/test-wordpress.sh",
+		"validate:theme": "node scripts/validate-theme.mjs",
+		"wp-env": "wp-env"
+	},
+	"devDependencies": {
+		"@wordpress/env": "11.13.0",
+		"ajv": "8.20.0"
+	},
+	"engines": {
+		"node": ">=24"
+	}
+}
