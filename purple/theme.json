@@ -453,6 +453,15 @@
 					"blockGap": "0"
 				}
 			},
+			"woocommerce/add-to-cart-with-options-quantity-selector": {
+				"color": {
+					"background": "#FFFFFF",
+					"text": "#111111"
+				},
+				"border": {
+					"radius": "0"
+				}
+			},
 			"woocommerce/add-to-cart-with-options-variation-selector-attribute-name": {
 				"color": {
 					"text": "var(--wp--preset--color--theme-4)"
