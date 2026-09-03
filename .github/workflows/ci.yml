@@ -63,8 +63,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: '7.0'
-            core: https://wordpress.org/wordpress-7.0.zip
+          - label: '7.1'
+            core: https://wordpress.org/wordpress-7.1.zip
           - label: latest
             core: https://wordpress.org/latest.zip
 
