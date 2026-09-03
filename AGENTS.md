@@ -19,7 +19,7 @@ Closes #<issue-number>.
 
 Before | After
 -- | --
-<before> | <after>
+_(before)_ | _(after)_
 
 ### How to test the changes in this Pull Request:
 
