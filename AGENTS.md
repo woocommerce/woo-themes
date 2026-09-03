@@ -13,7 +13,7 @@ reproducible testing instructions.
 
 <!-- Describe the changes made in this Pull Request and the reason for such changes. -->
 
-Closes # .
+Closes #<issue-number>.
 
 ### Screenshots or screen recordings:
 
