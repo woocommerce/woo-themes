@@ -6,7 +6,13 @@
 
 <!-- Describe the changes made to this Pull Request and the reason for such changes. -->
 
-Closes # .
+Closes #<issue-number>.
+
+### Screenshots or screen recordings:
+
+Before | After
+-- | --
+_(before)_ | _(after)_
 
 <!-- Begin testing instructions -->
 

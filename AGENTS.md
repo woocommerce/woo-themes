@@ -2,28 +2,14 @@
 
 ## Pull request descriptions
 
-Use the following template when writing a pull request description. Remove any
-parts that do not apply, replace placeholders, and include detailed,
-reproducible testing instructions.
+When creating pull requests, always use the template from
+`.github/PULL_REQUEST_TEMPLATE.md`. Its key sections are:
 
-```markdown
-### Changes proposed in this Pull Request:
+- **Changes proposed in this Pull Request**: Describe the changes and why they
+  are needed.
+- **Screenshots or screen recordings**: Include before-and-after visuals for UI
+  changes; remove this section when it does not apply.
+- **How to test the changes in this Pull Request**: Include detailed,
+  reproducible testing instructions.
 
-<!-- Describe the changes made in this Pull Request and the reason for such changes. -->
-
-Closes #<issue-number>.
-
-### Screenshots or screen recordings:
-
-Before | After
--- | --
-_(before)_ | _(after)_
-
-### How to test the changes in this Pull Request:
-
-Using the [WooCommerce Testing Instructions Guide](https://github.com/woocommerce/woocommerce/wiki/Writing-high-quality-testing-instructions), include detailed testing instructions:
-
-1.
-2.
-3.
-```
+Remove any template sections that do not apply and replace all placeholders.
