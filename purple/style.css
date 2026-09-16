@@ -34,27 +34,6 @@ body {
    WooCommerce — Mini cart
    ========================================================================== */
 
-/* WooCommerce hardcodes a white drawer surface; the drawer text follows the
- * scheme, so on dark palettes it rendered light-on-white. Paint the surface
- * with theme-1 (white in light schemes, so no change there). The overlay
- * ancestor bumps specificity above WooCommerce's own drawer rule. */
-.wc-block-components-drawer__screen-overlay .wc-block-components-drawer,
-.wc-block-components-drawer .wp-block-woocommerce-mini-cart-contents {
-	background-color: var(--wp--preset--color--theme-1);
-}
-
-/* Product name links in the mini cart drawer and the cart block are
- * WooCommerce components, not blocks, so the chrome opt-outs in theme.json
- * can't reach them; their context makes them clearly interactive, so skip
- * the content-link underline here too. */
-a.wc-block-components-product-name {
-	text-decoration: none;
-}
-
-a.wc-block-components-product-name:hover {
-	text-decoration: underline;
-}
-
 /* WooCommerce's outlined component buttons (e.g. the mini cart "View cart")
  * use currentColor and a hardcoded #1e1e1e hover; align them with the
  * theme's outline button style. The doubled class outranks WooCommerce's
@@ -336,7 +315,9 @@ a.wc-block-components-product-name:hover {
 	margin: 0
 }
 
-/* Checkbox alignment for reviews form */
+/* Checkbox alignment for reviews form
+ * @todo remove once https://github.com/woocommerce/woocommerce/pull/68696 ships.
+ */
 .wp-block-woocommerce-product-review-form .comment-form-cookies-consent {
 	align-items: flex-start;
 }
