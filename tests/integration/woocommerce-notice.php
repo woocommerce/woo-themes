@@ -82,8 +82,8 @@ try {
 		purple_notice_assert( false !== strpos( $output, $expected[ $scenario ] ), 'Display the appropriate explanation.' );
 		purple_notice_assert( false !== strpos( $output, 'WooCommerce ' . $minimum ), 'Display the header requirement.' );
 		purple_notice_assert( false !== strpos( $output, 'is-dismissible' ), 'Use a dismissible core notice.' );
-		$links = array( 'missing' => 'plugin-install.php', 'inactive' => 'plugins.php?plugin_status=inactive', 'outdated' => 'plugins.php?plugin_status=upgrade' );
-		purple_notice_assert( false !== strpos( $output, $links[ $scenario ] ), 'Link to the appropriate admin screen.' );
+		$links = array( 'missing' => 'plugin-install.php?s=WooCommerce&tab=search&type=term', 'inactive' => 'plugins.php?plugin_status=inactive', 'outdated' => 'plugins.php?plugin_status=upgrade' );
+		purple_notice_assert( false !== strpos( html_entity_decode( $output, ENT_QUOTES, 'UTF-8' ), $links[ $scenario ] ), 'Link to the appropriate admin screen.' );
 		purple_woocommerce_notice_scripts();
 		$script = wp_scripts()->registered['purple-woocommerce-notice'];
 		purple_notice_assert( false !== strpos( $script->src, '/themes/purple/assets/js/' ), 'Load the parent theme script for child themes too.' );
