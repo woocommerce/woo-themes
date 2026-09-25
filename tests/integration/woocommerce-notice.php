@@ -82,7 +82,7 @@ try {
 		purple_notice_assert( false !== strpos( $output, $expected[ $scenario ] ), 'Display the appropriate explanation.' );
 		purple_notice_assert( false !== strpos( $output, 'WooCommerce ' . $minimum ), 'Display the header requirement.' );
 		purple_notice_assert( false !== strpos( $output, 'is-dismissible' ), 'Use a dismissible core notice.' );
-		$links = array( 'missing' => 'plugin-install.php', 'inactive' => 'plugins.php', 'outdated' => 'plugins.php?plugin_status=upgrade' );
+		$links = array( 'missing' => 'plugin-install.php', 'inactive' => 'plugins.php?plugin_status=inactive', 'outdated' => 'plugins.php?plugin_status=upgrade' );
 		purple_notice_assert( false !== strpos( $output, $links[ $scenario ] ), 'Link to the appropriate admin screen.' );
 		purple_woocommerce_notice_scripts();
 		$script = wp_scripts()->registered['purple-woocommerce-notice'];
