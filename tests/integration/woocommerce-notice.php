@@ -68,7 +68,7 @@ purple_notice_assert( ! is_wp_error( $user_id ), 'Create the test administrator.
 
 try {
 	$user = wp_set_current_user( $user_id );
-	set_current_screen( 'dashboard' );
+	set_current_screen( 'themes' );
 	ob_start();
 	do_action( 'admin_notices' );
 	$output = ob_get_clean();
@@ -95,13 +95,14 @@ try {
 	}
 
 	if ( 'missing' === $scenario ) {
-		foreach ( array( 'themes', 'plugins', 'update-core' ) as $screen_id ) {
+		wp_dequeue_script( 'purple-woocommerce-notice' );
+		foreach ( array( 'dashboard', 'plugins', 'update-core', 'edit-post' ) as $screen_id ) {
 			set_current_screen( $screen_id );
-			purple_notice_assert( '' !== purple_get_woocommerce_notice(), 'Show the notice on ' . $screen_id . '.' );
+			purple_notice_assert( '' === purple_get_woocommerce_notice(), 'Hide the notice on ' . $screen_id . '.' );
+			purple_woocommerce_notice_scripts();
+			purple_notice_assert( ! wp_script_is( 'purple-woocommerce-notice', 'enqueued' ), 'Do not load dismissal code on ' . $screen_id . '.' );
 		}
-		set_current_screen( 'edit-post' );
-		purple_notice_assert( '' === purple_get_woocommerce_notice(), 'Avoid unrelated admin screens.' );
-		set_current_screen( 'dashboard' );
+		set_current_screen( 'themes' );
 
 		$user->remove_cap( 'install_plugins' );
 		$user->add_cap( 'install_plugins', false );
