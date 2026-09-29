@@ -70,15 +70,10 @@ body {
 
 .wp-block-woocommerce-checkout .wc-block-components-title {
 	font-size: var(--wp--preset--font-size--large);
-	line-height: 1.18;
 }
 
 .wc-block-components-form .wc-block-components-checkout-step {
 	margin-bottom: var(--wp--preset--spacing--50);
-}
-
-.wc-block-components-checkout-step__heading-container {
-	margin-bottom: var(--wp--preset--spacing--20);
 }
 
 .wp-block-woocommerce-checkout-order-summary-block {
@@ -242,9 +237,7 @@ body {
 }
 
 .woocommerce form .form-row label:not(:has(input[type="checkbox"])) {
-	font-size: var(--wp--preset--font-size--medium);
-	line-height: 1.71;
-	margin-bottom: 5px;
+	margin-bottom: 0.25em;
 }
 
 .woocommerce-form-login .form-row:has(.woocommerce-form-login__submit) {
@@ -262,10 +255,6 @@ body {
 	float: none;
 	margin: 0;
 	order: -1;
-}
-
-.woocommerce-account h2:has(+ .woocommerce-form-login) {
-	margin-block: var(--wp--preset--spacing--30);
 }
 
 .woocommerce-LostPassword.lost_password {
@@ -303,6 +292,7 @@ body {
    WooCommerce — Single product
    ========================================================================== */
 
+/* @todo remove once https://github.com/woocommerce/woocommerce/pull/69150 ships. */
 .wp-block-product-specifications-item__value p {
 	margin: 0
 }
@@ -326,14 +316,11 @@ body {
 	}
 }
 
-.wp-block-woocommerce-product-gallery-large-image-next-previous-is-layout-flex {
-	gap: 0;
-}
-
 /* ==========================================================================
    WooCommerce — Cart
    ========================================================================== */
 
+/* @todo remove once https://github.com/woocommerce/woocommerce/pull/69150 ships. */
 .wp-block-woocommerce-cart-order-summary-heading-block textarea {
 	padding-inline-start: 0;
 }
