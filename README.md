@@ -19,8 +19,6 @@ A repository for WooCommerce starter themes.
 
 The changelog uses standard GitHub merge and squash commit messages. Direct commits and rebase merges are not included; review the changelog before merging. Keep the standard merge messages so PR titles can be collected.
 
-The workflow only prepares a PR. Tagging, ZIP creation, publishing, and WordPress.com syncing are separate steps.
-
 Before merging, you can rerun the workflow with the same version to update the existing preparation branch and PR. Each run regenerates the changes from current `trunk`, so make any manual changelog edits after the final run.
 
 To preview the file changes locally from a clean checkout with release tags fetched, run `node scripts/prepare-release.mjs 0.0.3`. This edits the two theme files without committing or opening a PR.
