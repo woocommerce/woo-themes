@@ -1,4 +1,4 @@
-name: Publish Purple release
+name: Release Purple
 
 on:
   workflow_dispatch:
@@ -36,14 +36,14 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Validate and package the selected commit
-        id: package
-        run: node scripts/package-release.mjs "$RELEASE_COMMIT" "$RUNNER_TEMP/purple-release"
+      - name: Validate the selected commit and create the theme ZIP
+        id: release
+        run: node scripts/release-purple.mjs "$RELEASE_COMMIT" "$RUNNER_TEMP/purple-release"
 
       - name: Tag and publish the release
         env:
-          RELEASE_TAG: ${{ steps.package.outputs.tag }}
-          RELEASE_VERSION: ${{ steps.package.outputs.version }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
         run: |
           # Listing also finds draft releases which may not have a tag yet.
           gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[].tag_name' > "$RUNNER_TEMP/release-tags.txt"

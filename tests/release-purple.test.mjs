@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
-const script = fileURLToPath( new URL( '../scripts/package-release.mjs', import.meta.url ) );
+const script = fileURLToPath( new URL( '../scripts/release-purple.mjs', import.meta.url ) );
 const prepareScript = fileURLToPath( new URL( '../scripts/prepare-release.mjs', import.meta.url ) );
 const notes = '* Add a storefront pattern (#42)\n* Fix café styling (#43)';
 const stylesheet = '/*\nTheme Name: Purple\nVersion: 1.2.3\n*/\n';

@@ -9,7 +9,7 @@ const [ commit, outputDirectory ] = process.argv.slice( 2 );
 const git = ( ...args ) => execFileSync( 'git', args, { encoding: 'utf8' } ).trim();
 
 if ( ! /^[a-f0-9]{40}$/.test( commit ?? '' ) || ! outputDirectory ) {
-	throw new Error( 'Usage: node scripts/package-release.mjs <full commit SHA> <output directory>' );
+	throw new Error( 'Usage: node scripts/release-purple.mjs <full commit SHA> <output directory>' );
 }
 if ( git( 'cat-file', '-t', commit ) !== 'commit' ) {
 	throw new Error( 'Supply the SHA of a commit, not a tag or tree object.' );
@@ -48,5 +48,5 @@ fs.writeFileSync( notesFile, notes );
 if ( process.env.GITHUB_OUTPUT ) {
 	fs.appendFileSync( process.env.GITHUB_OUTPUT, `version=${ version }\ntag=${ tag }\n` );
 }
-console.log( `Packaged ${ tag } from ${ commit }: ${ archive }` );
+console.log( `Created ZIP for ${ tag } from ${ commit }: ${ archive }` );
 console.log( `Release notes: ${ notesFile }` );
