@@ -10,7 +10,7 @@ const script = fileURLToPath( new URL( '../scripts/release-purple.mjs', import.m
 const prepareScript = fileURLToPath( new URL( '../scripts/prepare-release.mjs', import.meta.url ) );
 const notes = '* Add a storefront pattern (#42)\n* Fix café styling (#43)';
 const stylesheet = '/*\nTheme Name: Purple\nVersion: 1.2.3\n*/\n';
-const readme = `=== Purple ===\nStable tag: 1.2.3\n\n== Changelog ==\n\n= 1.2.3 =\n${ notes }\n\n= 1.2.2 =\n* Older change\n\n== Copyright ==\nLicense text\n`;
+const readme = `=== Purple ===\nStable tag: 1.2.3\n\n== Changelog ==\n\n= 1.2.3 =\n${ notes }\n\n= 1.2.2 =\n* Older change\n`;
 
 function fixture( t, { style = stylesheet, text = readme } = {} ) {
 	const root = fs.mkdtempSync( path.join( os.tmpdir(), 'purple-release-test-' ) );
