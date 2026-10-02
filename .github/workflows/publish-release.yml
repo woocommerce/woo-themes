@@ -1,0 +1,59 @@
+name: Publish Purple release
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Full SHA of the prepared commit in trunk's history
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-purple-release
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/trunk'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      RELEASE_COMMIT: ${{ inputs.commit }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - name: Check out repository and release history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Validate and package the selected commit
+        id: package
+        run: node scripts/package-release.mjs "$RELEASE_COMMIT" "$RUNNER_TEMP/purple-release"
+
+      - name: Tag and publish the release
+        env:
+          RELEASE_TAG: ${{ steps.package.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.package.outputs.version }}
+        run: |
+          # Listing also finds draft releases which may not have a tag yet.
+          gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[].tag_name' > "$RUNNER_TEMP/release-tags.txt"
+          if grep -Fxq "$RELEASE_TAG" "$RUNNER_TEMP/release-tags.txt"; then
+            echo "::error::Release $RELEASE_TAG already exists. Inspect it before retrying; existing releases are never replaced."
+            exit 1
+          fi
+
+          git tag "$RELEASE_TAG" "$RELEASE_COMMIT"
+          git push origin "refs/tags/$RELEASE_TAG"
+          gh release create "$RELEASE_TAG" "$RUNNER_TEMP/purple-release/purple-$RELEASE_VERSION.zip" \
+            --verify-tag --title "Purple $RELEASE_VERSION" \
+            --notes-file "$RUNNER_TEMP/purple-release/release-notes.md"
