@@ -29,6 +29,8 @@ function fixture( t, { style = stylesheet, text = readme } = {} ) {
 	write( 'purple/theme.json', '{"version":3}' );
 	write( 'purple/templates/index.html', '<!-- wp:post-content /-->' );
 	write( 'purple/assets/test.bin', Buffer.from( [ 0, 255, 128, 1 ] ) );
+	write( 'purple/phpcs.xml.dist', '<ruleset name="Purple" />' );
+	write( '.gitattributes', fs.readFileSync( new URL( '../.gitattributes', import.meta.url ) ) );
 	write( 'README.md', 'Repository documentation, not theme content.' );
 	git( 'add', '.' );
 	git( 'commit', '-qm', 'Prepare Purple 1.2.3' );
@@ -54,7 +56,8 @@ function rejected( f, sha, message ) {
 
 test( 'packages exactly the selected ancestor, including binary assets, with only its release notes', ( t ) => {
 	const f = fixture( t );
-	const files = f.git( 'ls-tree', '-r', '--name-only', f.commit, 'purple/' ).split( '\n' );
+	const files = f.git( 'ls-tree', '-r', '--name-only', f.commit, 'purple/' ).split( '\n' )
+		.filter( ( file ) => file !== 'purple/phpcs.xml.dist' );
 	f.write( 'purple/style.css', stylesheet.replace( '1.2.3', '1.2.4' ) );
 	f.write( 'purple/later.txt', 'Not in the selected release' );
 	f.git( 'add', '.' );
@@ -70,6 +73,7 @@ test( 'packages exactly the selected ancestor, including binary assets, with onl
 	const archive = path.join( f.output, 'purple-1.2.3.zip' );
 	execFileSync( 'unzip', [ '-t', archive ] );
 	const entries = execFileSync( 'unzip', [ '-Z1', archive ], { encoding: 'utf8' } ).trim().split( '\n' );
+	assert.ok( ! entries.includes( 'purple/phpcs.xml.dist' ), 'The release ZIP must exclude the PHPCS configuration.' );
 	assert.deepEqual( entries.filter( ( entry ) => ! entry.endsWith( '/' ) ).sort(), files.sort() );
 	assert.ok( entries.every( ( entry ) => entry.startsWith( 'purple/' ) ) );
 	for ( const file of files ) {
