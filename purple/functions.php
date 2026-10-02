@@ -74,6 +74,10 @@ if ( ! function_exists( 'purple_setup' ) ) :
 
 		// Enqueue editor styles.
 		add_editor_style( 'style.css' );
+
+		foreach ( purple_get_woocommerce_stylesheets() as $relative_path ) {
+			add_editor_style( $relative_path );
+		}
 	}
 
 endif;
@@ -96,6 +100,39 @@ endif;
 
 add_action( 'init', 'purple_register_pattern_categories' );
 
+if ( ! function_exists( 'purple_get_woocommerce_stylesheets' ) ) :
+	/**
+	 * WooCommerce compatibility stylesheets that apply to the installed version.
+	 *
+	 * Keys are the releases that contain the upstream fix. A sheet is included
+	 * only while the installed version is older than that.
+	 *
+	 * @since purple 1.0
+	 *
+	 * @return array<string, string> Map of fixed-in version to stylesheet path.
+	 */
+	function purple_get_woocommerce_stylesheets(): array {
+		if ( ! defined( 'WC_VERSION' ) ) {
+			return array();
+		}
+
+		$stylesheets = array(
+			'11.2.0' => 'assets/css/woocommerce-11.1.css',
+			'11.3.0' => 'assets/css/woocommerce-11.2.css',
+		);
+
+		$applicable = array();
+		foreach ( $stylesheets as $version => $relative_path ) {
+			if ( version_compare( WC_VERSION, $version, '<' ) ) {
+				$applicable[ $version ] = $relative_path;
+			}
+		}
+
+		return $applicable;
+	}
+
+endif;
+
 if ( ! function_exists( 'purple_styles' ) ) :
 	/**
 	 * Enqueue styles.
@@ -105,18 +142,25 @@ if ( ! function_exists( 'purple_styles' ) ) :
 	 * @return void
 	 */
 	function purple_styles() {
+		$theme_version = wp_get_theme( get_template() )->get( 'Version' );
 
 		// Register theme stylesheet. Use the template (parent) directory and
 		// version so the file still resolves when a child theme is active.
-		wp_register_style(
+		wp_enqueue_style(
 			'purple-style',
 			get_template_directory_uri() . '/style.css',
 			array(),
-			wp_get_theme( get_template() )->get( 'Version' )
+			$theme_version
 		);
 
-		// Enqueue theme stylesheet.
-		wp_enqueue_style( 'purple-style' );
+		foreach ( purple_get_woocommerce_stylesheets() as $version => $relative_path ) {
+			wp_enqueue_style(
+				'purple-woocommerce-' . str_replace( '.', '-', $version ),
+				get_template_directory_uri() . '/' . $relative_path,
+				array(),
+				$theme_version
+			);
+		}
 	}
 
 endif;
