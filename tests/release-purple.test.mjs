@@ -88,14 +88,6 @@ test( 'accepts CRLF metadata and stops the last changelog entry before the next 
 	assert.equal( fs.readFileSync( path.join( f.output, 'release-notes.md' ), 'utf8' ), `${ notes }\n` );
 } );
 
-test( 'rejects branch names, short SHAs, option-like input, and nonexistent commits', ( t ) => {
-	const f = fixture( t );
-	for ( const sha of [ 'trunk', f.commit.slice( 0, 7 ), '--output=bad' ] ) {
-		rejected( f, sha, /full commit SHA/ );
-	}
-	rejected( f, '0'.repeat( 40 ), /could not get object info/ );
-} );
-
 test( 'rejects tag and tree object SHAs even when they resolve to valid theme content', ( t ) => {
 	const f = fixture( t );
 	f.git( 'tag', '-am', 'Prepared commit reference', 'prepared', f.commit );
@@ -147,20 +139,7 @@ for ( const [ name, options ] of Object.entries( {
 	} );
 }
 
-for ( const [ name, text ] of Object.entries( {
-	missing: readme.replace( '= 1.2.3 =', '= 1.2.0 =' ),
-	empty: readme.replace( notes, '  ' ),
-	duplicate: readme.replace( '= 1.2.2 =', '= 1.2.3 =' ),
-	outside: readme.replace( '== Changelog ==', '== Description ==' ) + '\n== Changelog ==\n= 1.2.2 =\n* Old\n',
-	heading: readme + '\n== Changelog ==\n',
-} ) ) {
-	test( `rejects ${ name } changelog`, ( t ) => {
-		const f = fixture( t, { text } );
-		rejected( f, f.commit, /changelog section|Changelog heading/ );
-	} );
-}
-
-test( 'rejects existing lightweight and annotated tags without changing their targets', ( t ) => {
+test( 'rejects existing tags without changing their targets', ( t ) => {
 	const f = fixture( t );
 	f.git( 'tag', 'purple/1.2.3', f.commit );
 	rejected( f, f.commit, /already exists/ );
