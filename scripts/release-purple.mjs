@@ -14,11 +14,6 @@ if ( ! /^[a-f0-9]{40}$/.test( commit ?? '' ) || ! outputDirectory ) {
 if ( git( 'cat-file', '-t', commit ) !== 'commit' ) {
 	throw new Error( 'Supply the SHA of a commit, not a tag or tree object.' );
 }
-try {
-	git( 'merge-base', '--is-ancestor', commit, 'refs/remotes/origin/trunk' );
-} catch {
-	throw new Error( 'The selected commit must belong to origin/trunk history. Fetch trunk first.' );
-}
 
 const stylesheet = git( 'show', `${ commit }:purple/style.css` );
 const readme = git( 'show', `${ commit }:purple/readme.txt` );
@@ -36,9 +31,6 @@ if ( matches.length !== 1 || ! matches[ 0 ].notes ) {
 }
 const notes = `${ matches[ 0 ].notes }\n`;
 
-// These are the entry points required by Purple's block theme package.
-git( 'cat-file', '-e', `${ commit }:purple/theme.json` );
-git( 'cat-file', '-e', `${ commit }:purple/templates/index.html` );
 fs.mkdirSync( outputDirectory, { recursive: true } );
 const archive = path.resolve( outputDirectory, `purple-${ version }.zip` );
 const notesFile = path.resolve( outputDirectory, 'release-notes.md' );

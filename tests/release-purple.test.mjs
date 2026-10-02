@@ -139,13 +139,36 @@ test( 'rejects tag and tree object SHAs even when they resolve to valid theme co
 	rejected( f, f.git( 'rev-parse', 'HEAD^{tree}' ), /SHA of a commit/ );
 } );
 
-test( 'rejects a prepared commit outside trunk history', ( t ) => {
+test( 'releasing the PR merge commit keeps the next changelog anchored to the release tag', ( t ) => {
 	const f = fixture( t );
-	f.git( 'checkout', '-qb', 'unmerged' );
-	f.write( 'purple/new.txt', 'Unmerged change' );
-	f.git( 'add', '.' );
-	f.git( 'commit', '-qm', 'Unmerged release' );
-	rejected( f, f.git( 'rev-parse', 'HEAD' ), /must belong to origin\/trunk history/ );
+	f.git( 'tag', 'purple/1.2.3' );
+	f.write( 'purple/feature.txt', 'First feature' );
+	f.git( 'add', 'purple' );
+	f.git( 'commit', '-qm', 'First feature (#44)' );
+	f.git( 'checkout', '-qb', 'codex/prepare-purple-1.2.4' );
+	const prepare = ( version ) => spawnSync( process.execPath, [ prepareScript, version ], { cwd: f.root, encoding: 'utf8' } );
+	assert.equal( prepare( '1.2.4' ).status, 0 );
+	f.git( 'add', 'purple' );
+	f.git( 'commit', '-qm', 'Prepare Purple 1.2.4' );
+	const branchTip = f.git( 'rev-parse', 'HEAD' );
+	f.git( 'checkout', '-q', 'trunk' );
+	f.git( 'merge', '--no-ff', 'codex/prepare-purple-1.2.4', '-m', 'Merge pull request #45 from example/prepare', '-m', 'Prepare Purple 1.2.4' );
+	const mergeCommit = f.git( 'rev-parse', 'HEAD' );
+	assert.notEqual( mergeCommit, branchTip );
+	// GitHub's merged event supplies this merge commit, not the PR branch tip.
+	const released = f.run( mergeCommit );
+	assert.equal( released.status, 0, released.stderr );
+	const archive = path.join( f.output, 'purple-1.2.4.zip' );
+	assert.equal( execFileSync( 'unzip', [ '-p', archive, 'purple/readme.txt' ], { encoding: 'utf8' } ), `${ f.git( 'show', `${ mergeCommit }:purple/readme.txt` ) }\n` );
+	f.git( 'tag', 'purple/1.2.4', mergeCommit );
+	f.write( 'purple/next.txt', 'Next feature' );
+	f.git( 'add', 'purple' );
+	f.git( 'commit', '-qm', 'Next feature (#46)' );
+	const next = prepare( '1.2.5' );
+	assert.equal( next.status, 0, next.stderr );
+	assert.match( next.stdout, /from purple\/1.2.4 with 1 PRs/ );
+	const nextReadme = fs.readFileSync( path.join( f.root, 'purple/readme.txt' ), 'utf8' );
+	assert.equal( nextReadme.split( '= 1.2.5 =' )[ 1 ].split( '= 1.2.4 =' )[ 0 ].trim(), '* Next feature (#46)' );
 } );
 
 for ( const [ name, options ] of Object.entries( {

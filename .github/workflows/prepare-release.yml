@@ -55,6 +55,8 @@ jobs:
 
             Prepare Purple ${{ inputs.version }} by updating the theme version and stable tag, and adding merged PR titles since the previous release to the changelog.
 
+            **Merging this PR publishes Purple ${{ inputs.version }} automatically.**
+
             ### How to test the changes in this Pull Request:
 
             1. Confirm that `Version` in `purple/style.css` and `Stable tag` in `purple/readme.txt` are both `${{ inputs.version }}`.

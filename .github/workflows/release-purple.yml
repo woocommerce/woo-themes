@@ -1,27 +1,28 @@
 name: Release Purple
 
 on:
-  workflow_dispatch:
-    inputs:
-      commit:
-        description: Full SHA of the prepared commit in trunk's history
-        required: true
-        type: string
+  pull_request:
+    branches: [trunk]
+    types: [closed]
 
 permissions:
   contents: write
 
 concurrency:
-  group: publish-purple-release
+  group: release-purple-${{ github.event.pull_request.number }}
   cancel-in-progress: false
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/trunk'
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'github-actions[bot]' &&
+      startsWith(github.event.pull_request.head.ref, 'codex/prepare-purple-')
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      RELEASE_COMMIT: ${{ inputs.commit }}
+      RELEASE_COMMIT: ${{ github.event.pull_request.merge_commit_sha }}
       GH_TOKEN: ${{ github.token }}
       GH_REPO: ${{ github.repository }}
 
@@ -29,6 +30,7 @@ jobs:
       - name: Check out repository and release history
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
 
       - name: Set up Node.js
@@ -36,7 +38,7 @@ jobs:
         with:
           node-version-file: .nvmrc
 
-      - name: Validate the selected commit and create the theme ZIP
+      - name: Create the theme ZIP and release notes
         id: release
         run: node scripts/release-purple.mjs "$RELEASE_COMMIT" "$RUNNER_TEMP/purple-release"
 
