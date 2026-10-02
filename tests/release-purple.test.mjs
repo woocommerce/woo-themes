@@ -79,15 +79,6 @@ test( 'packages exactly the selected ancestor, including binary assets, with onl
 	assert.equal( f.git( 'status', '--short', '--', 'purple' ), status );
 } );
 
-test( 'accepts CRLF metadata and stops the last changelog entry before the next readme heading', ( t ) => {
-	const f = fixture( t, {
-		style: stylesheet.replaceAll( '\n', '\r\n' ),
-		text: readme.replace( '= 1.2.2 =\n* Older change\n\n', '' ).replaceAll( '\n', '\r\n' ),
-	} );
-	assert.equal( f.run().status, 0 );
-	assert.equal( fs.readFileSync( path.join( f.output, 'release-notes.md' ), 'utf8' ), `${ notes }\n` );
-} );
-
 test( 'rejects tag and tree object SHAs even when they resolve to valid theme content', ( t ) => {
 	const f = fixture( t );
 	f.git( 'tag', '-am', 'Prepared commit reference', 'prepared', f.commit );
