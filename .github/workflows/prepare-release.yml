@@ -58,5 +58,6 @@ jobs:
             ### How to test the changes in this Pull Request:
 
             1. Confirm that `Version` in `purple/style.css` and `Stable tag` in `purple/readme.txt` are both `${{ inputs.version }}`.
-            2. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
-            3. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
+            2. Confirm the minimum required WordPress version (`Requires at least`) and WooCommerce version (`WC requires at least`) in `purple/style.css` are correct for this release and match the requirements in `purple/readme.txt`.
+            3. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
+            4. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
