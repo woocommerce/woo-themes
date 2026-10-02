@@ -1,0 +1,61 @@
+name: Release Purple
+
+on:
+  pull_request:
+    branches: [trunk]
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-purple-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'github-actions[bot]' &&
+      startsWith(github.event.pull_request.head.ref, 'codex/prepare-purple-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      RELEASE_COMMIT: ${{ github.event.pull_request.merge_commit_sha }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+
+    steps:
+      - name: Check out repository and release history
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Create the theme ZIP and release notes
+        id: release
+        run: node scripts/release-purple.mjs "$RELEASE_COMMIT" "$RUNNER_TEMP/purple-release"
+
+      - name: Tag and publish the release
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          # Listing also finds draft releases which may not have a tag yet.
+          gh api --paginate "repos/$GH_REPO/releases?per_page=100" --jq '.[].tag_name' > "$RUNNER_TEMP/release-tags.txt"
+          if grep -Fxq "$RELEASE_TAG" "$RUNNER_TEMP/release-tags.txt"; then
+            echo "::error::Release $RELEASE_TAG already exists. Inspect it before retrying; existing releases are never replaced."
+            exit 1
+          fi
+
+          git tag "$RELEASE_TAG" "$RELEASE_COMMIT"
+          git push origin "refs/tags/$RELEASE_TAG"
+          gh release create "$RELEASE_TAG" "$RUNNER_TEMP/purple-release/purple-$RELEASE_VERSION.zip" \
+            --verify-tag --title "Purple $RELEASE_VERSION" \
+            --notes-file "$RUNNER_TEMP/purple-release/release-notes.md"

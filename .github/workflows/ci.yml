@@ -42,6 +42,9 @@ jobs:
       - name: Validate theme metadata, JSON, patterns, and assets
         run: pnpm validate:theme
 
+      - name: Test Release Purple
+        run: node --test tests/release-purple.test.mjs
+
       - name: Set up PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:

@@ -1,9 +1,9 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import process from 'node:process';
+import { readChangelog, readReleaseVersion, versionPattern } from './release-utils.mjs';
 
 const version = process.argv[ 2 ];
-const versionPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 const git = ( ...args ) => execFileSync( 'git', args, { encoding: 'utf8' } ).trim();
 
 function fail( message ) {
@@ -29,12 +29,8 @@ const stylesheetPath = 'purple/style.css';
 const readmePath = 'purple/readme.txt';
 const stylesheet = fs.readFileSync( stylesheetPath, 'utf8' );
 const readme = fs.readFileSync( readmePath, 'utf8' );
-const currentVersion = stylesheet.match( /^Version: (\S+)$/m )?.[ 1 ];
-const stableTag = readme.match( /^Stable tag: (\S+)$/m )?.[ 1 ];
+const currentVersion = readReleaseVersion( stylesheet, readme );
 
-if ( ! versionPattern.test( currentVersion ?? '' ) || currentVersion !== stableTag ) {
-	fail( 'style.css Version and readme.txt Stable tag must contain the same X.Y.Z version.' );
-}
 if ( compareVersions( version, currentVersion ) <= 0 ) {
 	fail( `The new version must be greater than ${ currentVersion }.` );
 }
@@ -71,19 +67,15 @@ if ( entries.length === 0 ) {
 	fail( `No merged PR titles found since ${ previousTag }.` );
 }
 
-const changelogHeading = '== Changelog ==\n';
-if ( readme.split( changelogHeading ).length !== 2 ) {
-	fail( 'readme.txt must contain exactly one Changelog heading.' );
-}
-if ( readme.includes( `= ${ version } =` ) ) {
+const { offset, newline, sections } = readChangelog( readme );
+if ( sections.some( ( section ) => section.version === version ) ) {
 	fail( `readme.txt already has a changelog for ${ version }.` );
 }
 
-const changelog = `= ${ version } =\n${ entries.join( '\n' ) }`;
-const updatedReadme = readme
-	.replace( /^Stable tag: \S+$/m, () => `Stable tag: ${ version }` )
-	.replace( changelogHeading, () => `${ changelogHeading }\n${ changelog }\n` );
+const changelog = `= ${ version } =${ newline }${ entries.join( newline ) }`;
+const updatedReadme = ( readme.slice( 0, offset ) + newline + changelog + newline + readme.slice( offset ) )
+	.replace( /^(Stable tag:[ \t]*)\S+([ \t]*\r?)$/m, ( match, prefix, suffix ) => `${ prefix }${ version }${ suffix }` );
 
-fs.writeFileSync( stylesheetPath, stylesheet.replace( /^Version: \S+$/m, () => `Version: ${ version }` ) );
+fs.writeFileSync( stylesheetPath, stylesheet.replace( /^(Version:[ \t]*)\S+([ \t]*\r?)$/m, ( match, prefix, suffix ) => `${ prefix }${ version }${ suffix }` ) );
 fs.writeFileSync( readmePath, updatedReadme );
 console.log( `Prepared Purple ${ version } from ${ previousTag } with ${ entries.length } PRs.` );
