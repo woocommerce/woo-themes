@@ -1,0 +1,67 @@
+name: Prepare Purple release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'New Purple version (X.Y.Z, e.g. 0.0.3)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: prepare-purple-release
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    name: Open release preparation PR
+    if: github.ref == 'refs/heads/trunk'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      VERSION: ${{ inputs.version }}
+
+    steps:
+      - name: Check out trunk and release tags
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: trunk
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Update versions and changelog
+        run: node scripts/prepare-release.mjs "$VERSION"
+
+      - name: Create or update release preparation PR
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        with:
+          base: trunk
+          branch: codex/prepare-purple-${{ inputs.version }}
+          add-paths: |
+            purple/style.css
+            purple/readme.txt
+          commit-message: Prepare Purple ${{ inputs.version }}
+          title: Prepare Purple ${{ inputs.version }}
+          body: |
+            ### Changes proposed in this Pull Request:
+
+            Prepare Purple ${{ inputs.version }} by updating the theme version and stable tag, and adding merged PR titles since the previous release to the changelog.
+
+            ### How to test the changes in this Pull Request:
+
+            1. Confirm that `Version` in `purple/style.css` and `Stable tag` in `purple/readme.txt` are both `${{ inputs.version }}`.
+            2. Confirm:
+
+               - The minimum required WordPress version (`Requires at least`) in `purple/style.css` is correct for this release and matches `purple/readme.txt`.
+               - The minimum required WooCommerce version (`WC requires at least`) in `purple/style.css` is correct for this release and matches `purple/readme.txt`.
+
+            3. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
+            4. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
