@@ -21,10 +21,8 @@ A repository for WooCommerce starter themes.
 ### Notes
 
 - The changelog collects PR titles from standard merge and squash commit messages.
-- Direct commits and rebase merges are omitted; review the changelog before merging.
+- Direct commits and rebase merges are omitted; review and edit the changelog after the final preparation run, before merging.
 - Rerunning preparation with the same version updates the existing PR from current `trunk`.
-- Make manual changelog edits after the final preparation run.
-- [GitHub requires approval](https://docs.github.com/en/actions/concepts/security/github_token) for CI runs on PRs created with `GITHUB_TOKEN`.
 - Automatic publishing only handles merged PRs created by `github-actions[bot]` from this repository's `codex/prepare-purple-*` branches into `trunk`.
 - An existing tag or release, including a draft, stops publication without overwriting anything.
 - After a partial failure, inspect the tag and draft release. Finish manually, or remove the unpublished partial release and tag before retrying. Never replace a published release.
