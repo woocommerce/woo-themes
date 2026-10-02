@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
+import { readChangelog, readReleaseVersion } from './release-utils.mjs';
 
 // Read and archive committed files only; the working tree is never release input.
 const [ commit, outputDirectory ] = process.argv.slice( 2 );
@@ -20,32 +21,20 @@ try {
 }
 
 const stylesheet = git( 'show', `${ commit }:purple/style.css` );
-const readme = git( 'show', `${ commit }:purple/readme.txt` ).replace( /\r\n/g, '\n' );
-const versions = [ ...stylesheet.matchAll( /^Version:[ \t]*(\S+)[ \t]*\r?$/gm ) ];
-const stableTags = [ ...readme.matchAll( /^Stable tag:[ \t]*(\S+)[ \t]*$/gm ) ];
-const version = versions[ 0 ]?.[ 1 ];
-if ( versions.length !== 1 || stableTags.length !== 1 ||
-	! /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test( version ?? '' ) ||
-	version !== stableTags[ 0 ][ 1 ] ) {
-	throw new Error( 'style.css Version and readme.txt Stable tag must contain the same X.Y.Z version.' );
-}
+const readme = git( 'show', `${ commit }:purple/readme.txt` );
+const version = readReleaseVersion( stylesheet, readme );
 
 const tag = `purple/${ version }`;
 if ( git( 'tag', '--list', tag ) ) {
 	throw new Error( `Tag ${ tag } already exists. Inspect the existing release before retrying; tags are never replaced.` );
 }
 
-const changelogs = readme.split( /^== Changelog ==[ \t]*$/m );
-if ( changelogs.length !== 2 ) {
-	throw new Error( 'readme.txt must contain exactly one Changelog heading.' );
-}
-const changelog = changelogs[ 1 ].split( /^== .+ ==[ \t]*$/m )[ 0 ];
-const sections = [ ...changelog.matchAll( /^= (.+) =[ \t]*\n([\s\S]*?)(?=^= .+ =[ \t]*$|(?![\s\S]))/gm ) ];
-const matches = sections.filter( ( section ) => section[ 1 ] === version );
-if ( matches.length !== 1 || ! matches[ 0 ][ 2 ].trim() ) {
+const { sections } = readChangelog( readme );
+const matches = sections.filter( ( section ) => section.version === version );
+if ( matches.length !== 1 || ! matches[ 0 ].notes ) {
 	throw new Error( `readme.txt must contain exactly one nonempty changelog section for ${ version }.` );
 }
-const notes = `${ matches[ 0 ][ 2 ].trim() }\n`;
+const notes = `${ matches[ 0 ].notes }\n`;
 
 // These are the entry points required by Purple's block theme package.
 git( 'cat-file', '-e', `${ commit }:purple/theme.json` );

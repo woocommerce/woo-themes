@@ -80,8 +80,10 @@ test( 'fails before editing when the metadata or changelog cannot be safely upda
 	const original = repo.read( 'purple/readme.txt' );
 	for ( const contents of [
 		original.replace( 'Stable tag: 0.0.2', 'Stable tag: 0.0.1' ),
+		`Stable tag: 0.0.2\n${ original }`,
 		original.replace( '== Changelog ==', '== Missing ==' ),
 		original.replace( '= 0.0.1 =', '= 0.0.3 =' ),
+		original.replace( '== Copyright ==\nKeep this.\n', '= 0.0.3 =' ),
 	] ) {
 		repo.write( 'purple/readme.txt', contents );
 		assert.notEqual( repo.prepare( '0.0.3' ).status, 0 );

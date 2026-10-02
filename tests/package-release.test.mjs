@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 const script = fileURLToPath( new URL( '../scripts/package-release.mjs', import.meta.url ) );
+const prepareScript = fileURLToPath( new URL( '../scripts/prepare-release.mjs', import.meta.url ) );
 const notes = '* Add a storefront pattern (#42)\n* Fix café styling (#43)';
 const stylesheet = '/*\nTheme Name: Purple\nVersion: 1.2.3\n*/\n';
 const readme = `=== Purple ===\nStable tag: 1.2.3\n\n== Changelog ==\n\n= 1.2.3 =\n${ notes }\n\n= 1.2.2 =\n* Older change\n\n== Copyright ==\nLicense text\n`;
@@ -86,6 +87,42 @@ test( 'accepts CRLF metadata and stops the last changelog entry before the next 
 	assert.equal( f.run().status, 0 );
 	assert.equal( fs.readFileSync( path.join( f.output, 'release-notes.md' ), 'utf8' ), `${ notes }\n` );
 } );
+
+for ( const [ name, newline ] of [ [ 'LF', '\n' ], [ 'CRLF', '\r\n' ] ] ) {
+	test( `packages the preparation script's output with ${ name } files`, ( t ) => {
+		const f = fixture( t, {
+			style: stylesheet.replaceAll( '\n', newline ),
+			text: readme.replaceAll( '\n', newline ),
+		} );
+		f.git( 'tag', 'purple/1.2.3' );
+		f.write( 'purple/assets/new.txt', 'New release asset' );
+		f.git( 'add', '.' );
+		f.git( 'commit', '-qm', 'Add a release asset (#44)' );
+		const prepared = spawnSync( process.execPath, [ prepareScript, '1.2.4' ], { cwd: f.root, encoding: 'utf8' } );
+		assert.equal( prepared.status, 0, prepared.stderr );
+		const preparedStyle = fs.readFileSync( path.join( f.root, 'purple/style.css' ), 'utf8' );
+		const preparedReadme = fs.readFileSync( path.join( f.root, 'purple/readme.txt' ), 'utf8' );
+		const expectedNotes = '* Add a release asset (#44)';
+		assert.equal( preparedStyle, stylesheet.replace( '1.2.3', '1.2.4' ).replaceAll( '\n', newline ) );
+		assert.equal( preparedReadme, readme
+			.replace( 'Stable tag: 1.2.3', 'Stable tag: 1.2.4' )
+			.replace( '== Changelog ==\n', `== Changelog ==\n\n= 1.2.4 =\n${ expectedNotes }\n` )
+			.replaceAll( '\n', newline ) );
+		f.git( 'add', '.' );
+		f.git( 'commit', '-qm', 'Prepare Purple 1.2.4' );
+		const releaseCommit = f.git( 'rev-parse', 'HEAD' );
+		f.git( 'update-ref', 'refs/remotes/origin/trunk', releaseCommit );
+		const packaged = f.run( releaseCommit );
+		assert.equal( packaged.status, 0, packaged.stderr );
+		assert.equal( fs.readFileSync( path.join( f.output, 'release-notes.md' ), 'utf8' ), `${ expectedNotes }\n` );
+		const archive = path.join( f.output, 'purple-1.2.4.zip' );
+		execFileSync( 'unzip', [ '-t', archive ] );
+		assert.equal( execFileSync( 'unzip', [ '-p', archive, 'purple/readme.txt' ], { encoding: 'utf8' } ), preparedReadme );
+		assert.equal( execFileSync( 'unzip', [ '-p', archive, 'purple/style.css' ], { encoding: 'utf8' } ), preparedStyle );
+		assert.equal( execFileSync( 'unzip', [ '-p', archive, 'purple/assets/new.txt' ], { encoding: 'utf8' } ), 'New release asset' );
+		assert.equal( f.git( 'tag', '--list' ), 'purple/1.2.3' );
+	} );
+}
 
 test( 'rejects branch names, short SHAs, option-like input, and nonexistent commits', ( t ) => {
 	const f = fixture( t );
