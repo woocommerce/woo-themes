@@ -24,7 +24,6 @@ jobs:
     timeout-minutes: 5
     env:
       VERSION: ${{ inputs.version }}
-      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Check out trunk and release tags
@@ -41,28 +40,23 @@ jobs:
       - name: Update versions and changelog
         run: node scripts/prepare-release.mjs "$VERSION"
 
-      - name: Push release preparation branch
-        run: |
-          git switch -c "codex/prepare-purple-$VERSION"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add purple/style.css purple/readme.txt
-          git commit -m "Prepare Purple $VERSION"
-          git push origin "HEAD:refs/heads/codex/prepare-purple-$VERSION"
+      - name: Create or update release preparation PR
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        with:
+          base: trunk
+          branch: codex/prepare-purple-${{ inputs.version }}
+          add-paths: |
+            purple/style.css
+            purple/readme.txt
+          commit-message: Prepare Purple ${{ inputs.version }}
+          title: Prepare Purple ${{ inputs.version }}
+          body: |
+            ### Changes proposed in this Pull Request:
 
-      - name: Open pull request
-        run: |
-          cat > "$RUNNER_TEMP/release-pr.md" <<EOF
-          ### Changes proposed in this Pull Request:
+            Prepare Purple ${{ inputs.version }} by updating the theme version and stable tag, and adding merged PR titles since the previous release to the changelog.
 
-          Prepare Purple $VERSION by updating the theme version and stable tag, and adding merged PR titles since the previous release to the changelog.
+            ### How to test the changes in this Pull Request:
 
-          ### How to test the changes in this Pull Request:
-
-          1. Confirm that Version in purple/style.css and Stable tag in purple/readme.txt are both $VERSION.
-          2. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
-          3. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
-          EOF
-          gh pr create --base trunk --head "codex/prepare-purple-$VERSION" \
-            --title "Prepare Purple $VERSION" \
-            --body-file "$RUNNER_TEMP/release-pr.md"
+            1. Confirm that `Version` in `purple/style.css` and `Stable tag` in `purple/readme.txt` are both `${{ inputs.version }}`.
+            2. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
+            3. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
