@@ -21,6 +21,25 @@ function purple_test_assert( bool $condition, string $message ): void {
 
 $stage = $args[0] ?? '';
 
+if ( 'assert-core-version' === $stage ) {
+	purple_test_assert( get_bloginfo( 'version' ) === ( $args[1] ?? '' ), 'Installed WordPress must match the resolved CI version.' );
+	fwrite( STDOUT, "Passed: installed core matches resolved version.\n" );
+	exit( 0 );
+}
+
+// Unsupported cores exercise WordPress's requirement gate without activating
+// WooCommerce, which may itself require a newer WordPress release.
+if ( 'assert-unsupported-core' === $stage ) {
+	$result = validate_theme_requirements( 'purple' );
+	purple_test_assert(
+		is_wp_error( $result ) && 'theme_wp_incompatible' === $result->get_error_code(),
+		'WordPress must reject Purple below its declared minimum version.'
+	);
+	purple_test_assert( 'ci-placeholder-theme' === get_stylesheet(), 'The placeholder theme must remain active.' );
+	fwrite( STDOUT, "Passed: unsupported core correctly rejects Purple.\n" );
+	exit( 0 );
+}
+
 purple_test_assert( class_exists( 'WooCommerce' ), 'WooCommerce must be active.' );
 purple_test_assert(
 	defined( 'WC_PLUGIN_FILE' )

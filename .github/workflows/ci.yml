@@ -39,6 +39,9 @@ jobs:
       - name: Test release preparation
         run: node --test tests/prepare-release.test.mjs
 
+      - name: Test rolling WordPress version resolution
+        run: node --test tests/resolve-wordpress-versions.test.mjs
+
       - name: Validate theme metadata, JSON, patterns, and assets
         run: pnpm validate:theme
 
@@ -61,18 +64,33 @@ jobs:
       - name: Run WordPress Coding Standards
         run: composer lint
 
+  wordpress-versions:
+    name: Resolve stable WordPress releases
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.versions.outputs.matrix }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: Resolve latest stable and preceding release series
+        id: versions
+        run: node scripts/resolve-wordpress-versions.mjs
+
   wordpress:
+    needs: wordpress-versions
     name: WordPress ${{ matrix.label }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
       fail-fast: false
-      matrix:
-        include:
-          - label: '7.1'
-            core: https://wordpress.org/wordpress-7.1.zip
-          - label: latest
-            core: https://wordpress.org/latest.zip
+      matrix: ${{ fromJSON(needs.wordpress-versions.outputs.matrix) }}
 
     steps:
       - name: Check out repository
@@ -95,7 +113,9 @@ jobs:
           WP_ENV_CORE: ${{ matrix.core }}
         run: pnpm wp-env start --update
 
-      - name: Run activation and child-theme checks
+      - name: Check requirements, activation, and child-theme assets
+        env:
+          EXPECTED_WP_VERSION: ${{ matrix.version }}
         run: pnpm test:wordpress
 
       - name: Stop WordPress
