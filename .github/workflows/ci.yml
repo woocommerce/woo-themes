@@ -69,8 +69,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: minimum supported
-            target: minimum
+          - label: previous release series (latest-1)
+            target: latest-1
           - label: latest stable
             target: latest
 
@@ -96,10 +96,15 @@ jobs:
           TARGET: ${{ matrix.target }}
         run: |
           core=https://wordpress.org/latest.zip
-          if [[ "$TARGET" == minimum ]]; then
-            minimum=$(awk -F ': *' '/^Requires at least:/ { print $2; exit }' purple/style.css)
-            [[ "$minimum" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || exit 1
-            core="https://wordpress.org/wordpress-${minimum}.zip"
+          if [[ "$TARGET" == latest-1 ]]; then
+            previous=$(curl --fail --silent --show-error --retry 3 https://api.wordpress.org/core/version-check/1.7/ | jq -er '
+              [.offers[] | select(.response == "upgrade" or .response == "autoupdate")
+                | .version | select(test("^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"))]
+              | group_by(split(".")[:2])
+              | map(sort_by(split(".") | map(tonumber)) | last)
+              | sort_by(split(".") | map(tonumber)) | reverse
+              | .[1] // error("No preceding stable WordPress release series found")')
+            core="https://wordpress.org/wordpress-${previous}.zip"
           fi
           echo "core=$core" >> "$GITHUB_OUTPUT"
 
