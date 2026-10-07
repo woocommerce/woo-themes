@@ -50,6 +50,7 @@ jobs:
             purple/readme.txt
           commit-message: Prepare Purple ${{ inputs.version }}
           title: Prepare Purple ${{ inputs.version }}
+          reviewers: ${{ github.actor }}
           body: |
             ### Changes proposed in this Pull Request:
 

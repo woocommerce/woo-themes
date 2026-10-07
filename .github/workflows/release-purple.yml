@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: release-purple-${{ github.event.pull_request.number }}
@@ -57,5 +58,15 @@ jobs:
           git tag "$RELEASE_TAG" "$RELEASE_COMMIT"
           git push origin "refs/tags/$RELEASE_TAG"
           gh release create "$RELEASE_TAG" "$RUNNER_TEMP/purple-release/purple-$RELEASE_VERSION.zip" \
-            --verify-tag --title "Purple $RELEASE_VERSION" \
+            --verify-tag --title "purple@$RELEASE_VERSION" \
             --notes-file "$RUNNER_TEMP/purple-release/release-notes.md"
+
+      - name: Comment with the published release
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MERGED_BY: ${{ github.event.pull_request.merged_by.login }}
+        run: |
+          RELEASE_URL=$(gh release view "$RELEASE_TAG" --json url --jq '.url')
+          printf 'Hey @%s, Purple release is ready: %s\n' "$MERGED_BY" "$RELEASE_URL" > "$RUNNER_TEMP/purple-release-comment.md"
+          gh pr comment "$PR_NUMBER" --body-file "$RUNNER_TEMP/purple-release-comment.md"
