@@ -99,6 +99,14 @@ jobs:
           if [[ "$TARGET" == minimum ]]; then
             minimum=$(awk -F ': *' '/^Requires at least:/ { print $2; exit }' purple/style.css)
             [[ "$minimum" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || exit 1
+            if [[ "$minimum" =~ ^[0-9]+\.[0-9]+$ ]]; then
+              minimum=$(curl --fail --silent --show-error --retry 3 https://api.wordpress.org/core/version-check/1.7/ | jq -er --arg series "$minimum" '
+                [.offers[] | select(.response == "upgrade" or .response == "autoupdate")
+                  | .version | select(test("^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"))
+                  | select(split(".")[:2] | join(".") == $series)]
+                | sort_by(split(".") | map(tonumber)) | last
+                // error("No stable release found for the minimum WordPress series")')
+            fi
             core="https://wordpress.org/wordpress-${minimum}.zip"
           fi
           echo "core=$core" >> "$GITHUB_OUTPUT"
