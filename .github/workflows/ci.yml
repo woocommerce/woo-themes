@@ -69,10 +69,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - label: '7.1'
-            core: https://wordpress.org/wordpress-7.1.zip
-          - label: latest
-            core: https://wordpress.org/latest.zip
+          - label: minimum supported
+            target: minimum
+          - label: latest stable
+            target: latest
 
     steps:
       - name: Check out repository
@@ -90,9 +90,30 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Select WordPress version
+        id: wordpress
+        env:
+          TARGET: ${{ matrix.target }}
+        run: |
+          core=https://wordpress.org/latest.zip
+          if [[ "$TARGET" == minimum ]]; then
+            minimum=$(awk -F ': *' '/^Requires at least:/ { print $2; exit }' purple/style.css)
+            [[ "$minimum" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]] || exit 1
+            if [[ "$minimum" =~ ^[0-9]+\.[0-9]+$ ]]; then
+              minimum=$(curl --fail --silent --show-error --retry 3 https://api.wordpress.org/core/version-check/1.7/ | jq -er --arg series "$minimum" '
+                [.offers[] | select(.response == "upgrade" or .response == "autoupdate")
+                  | .version | select(test("^[0-9]+\\.[0-9]+(\\.[0-9]+)?$"))
+                  | select(split(".")[:2] | join(".") == $series)]
+                | sort_by(split(".") | map(tonumber)) | last
+                // error("No stable release found for the minimum WordPress series")')
+            fi
+            core="https://wordpress.org/wordpress-${minimum}.zip"
+          fi
+          echo "core=$core" >> "$GITHUB_OUTPUT"
+
       - name: Start WordPress
         env:
-          WP_ENV_CORE: ${{ matrix.core }}
+          WP_ENV_CORE: ${{ steps.wordpress.outputs.core }}
         run: pnpm wp-env start --update
 
       - name: Run activation and child-theme checks
