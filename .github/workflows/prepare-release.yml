@@ -67,4 +67,4 @@ jobs:
                - The minimum required WooCommerce version (`WC requires at least`) in `purple/style.css` is correct for this release and matches `purple/readme.txt`.
 
             3. Review the new changelog section against the PRs merged since the previous Purple tag. Edit the wording if needed.
-            4. Approve the pending Theme CI workflow run on this bot-created PR and confirm all checks pass before merging.
+            4. Open this PR's **Checks** tab and approve the CI run if needed. Confirm all **Theme CI** checks pass before merging.
