@@ -15,7 +15,7 @@ A repository for WooCommerce starter themes.
 1. In GitHub Actions, open **Prepare Purple release** and choose **Run workflow** on `trunk`.
 2. Enter the new version as `X.Y.Z` (for example, `1.0.2`). It must be newer than the current theme version and previous release.
 3. Review the generated PR's version, stable tag, and changelog changes.
-4. Approve the pending **Theme CI** run, then merge the PR once checks pass.
+4. Open the generated PR's **Checks** tab and approve the CI run if needed. Confirm all **Theme CI** checks pass before merging.
 5. **Merging the preparation PR triggers Release Purple**, which creates the tag and GitHub release with the prepared notes and Purple-only ZIP.
 
 ### Notes
