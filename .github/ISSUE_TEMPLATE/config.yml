@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Purple bugs and feedback
+    url: https://github.com/woocommerce/woocommerce/issues/new/choose
+    about: This repository is deprecated. Report Purple issues in the WooCommerce monorepo and mention Purple.
+  - name: Purple migration status
+    url: https://github.com/woocommerce/woocommerce/pull/69820
+    about: Follow the migration of Purple to the WooCommerce monorepo.

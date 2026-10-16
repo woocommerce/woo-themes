@@ -1,3 +1,5 @@
+> This repository is deprecated. Please submit new pull requests to [woocommerce/woocommerce](https://github.com/woocommerce/woocommerce). Purple is moving to `themes/purple/`; see [the migration PR](https://github.com/woocommerce/woocommerce/pull/69820) for its landing branch and merge status.
+
 <!-- You can erase any parts of this template not applicable to your Pull Request. -->
 
 ### Changes proposed in this Pull Request:
